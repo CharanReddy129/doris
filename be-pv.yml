@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: be-pv
+  name: be-pv-storage
   labels:
-    volume: be
+    volume: be-storage
 spec:
   storageClassName: doris-storage
   capacity:
@@ -11,5 +11,21 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/data/be
+    path: /mnt/data/be-storage
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: be-pv-log
+  labels:
+    volume: be-log
+spec:
+  storageClassName: doris-storage
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/be-log
     type: DirectoryOrCreate
