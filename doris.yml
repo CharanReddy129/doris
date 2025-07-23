@@ -30,7 +30,7 @@ spec:
               storage: 1Gi
           selector:
             matchLabels:
-              volume: fe
+              volume: fe-meta
       - mountPath: /opt/apache-doris/fe/log
         name: fe-log
         persistentVolumeClaimSpec:
@@ -42,7 +42,7 @@ spec:
               storage: 1Gi
           selector:
             matchLabels:
-              volume: fe
+              volume: fe-log
   beSpec:
     image: apache/doris:be-2.1.10
     imagePullSecrets:
@@ -69,7 +69,7 @@ spec:
               storage: 1Gi
           selector:
             matchLabels:
-              volume: be
+              volume: be-storage
       - mountPath: /opt/apache-doris/be/log
         name: be-log
         persistentVolumeClaimSpec:
@@ -81,4 +81,4 @@ spec:
               storage: 1Gi
           selector:
             matchLabels:
-              volume: be
+              volume: be-log
