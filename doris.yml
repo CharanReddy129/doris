@@ -1,0 +1,84 @@
+apiVersion: doris.selectdb.com/v1
+kind: DorisCluster
+metadata:
+  name: doris
+  namespace: doris
+spec:
+  feSpec:
+    image: apache/doris:fe-2.1.10
+    imagePullSecrets:
+      - name: my-registry-secret
+    replicas: 1
+    requests:
+      cpu: "0.5"
+      memory: "512Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+    configMapInfo:
+      configMapName: fe-conf
+      resolveKey: fe-conf
+    persistentVolumes:
+      - mountPath: /opt/apache-doris/fe/doris-meta
+        name: fe-meta
+        persistentVolumeClaimSpec:
+          storageClassName: doris-storage
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          selector:
+            matchLabels:
+              volume: fe
+      - mountPath: /opt/apache-doris/fe/log
+        name: fe-log
+        persistentVolumeClaimSpec:
+          storageClassName: doris-storage
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          selector:
+            matchLabels:
+              volume: fe
+  beSpec:
+    image: apache/doris:be-2.1.10
+    imagePullSecrets:
+      - name: my-registry-secret
+    replicas: 1
+    requests:
+      cpu: "0.5"
+      memory: "512Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+    configMapInfo:
+      configMapName: be-conf
+      resolveKey: be-conf
+    persistentVolumes:
+      - mountPath: /opt/apache-doris/be/storage
+        name: be-storage
+        persistentVolumeClaimSpec:
+          storageClassName: doris-storage
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          selector:
+            matchLabels:
+              volume: be
+      - mountPath: /opt/apache-doris/be/log
+        name: be-log
+        persistentVolumeClaimSpec:
+          storageClassName: doris-storage
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          selector:
+            matchLabels:
+              volume: be

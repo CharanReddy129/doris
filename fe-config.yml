@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fe-conf
+  labels:
+    app.kubernetes.io/component: fe
+data:
+  fe.conf: |
+    CUR_DATE=`date +%Y%m%d-%H%M%S`
+    LOG_DIR = ${DORIS_HOME}/log
+    JAVA_OPTS="-Djavax.security.auth.useSubjectCredsOnly=false -Xss2m -Xmx1024m -XX:+UseMembar -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Xloggc:$DORIS_HOME/log/fe.gc.log.$CUR_DATE"
+    JAVA_OPTS_FOR_JDK_9="-Djavax.security.auth.useSubjectCredsOnly=false -Xss2m -Xmx1024m -Xlog:gc*:$DORIS_HOME/log/fe.gc.log.$CUR_DATE:time"
+    sys_log_level = INFO
+    sys_log_mode = NORMAL
+    http_port = 8030
+    rpc_port = 9020
+    query_port = 9030
+    edit_log_port = 9010
+    enable_fqdn_mode = true
